@@ -1,0 +1,2 @@
+PIL 4.2.1
+validators 0.12.0
