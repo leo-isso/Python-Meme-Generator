@@ -1,5 +1,9 @@
 import os
+import re
+import shutil
+import requests
 import textwrap
+import validators
 
 from DrawStroke import DrawTextStroke
 
@@ -12,13 +16,13 @@ class Meme_maker():
         #default variables (free to change)
         self.default_meme = 'default_meme'
         self.generated_meme = 'new_memes'
-        
+
         self.default_font_path = 'font/impact.ttf'
         #default_font_size, default_font, changes depending on image size, function 'img_resize'
         self.default_font_size = 32
         self.default_font = ImageFont.truetype(self.default_font_path, self.default_font_size)
 
-        self.max_img_size = (500,500)
+        self.max_img_size = (500, 500)
         self.meme_text_color = 'white'
         self.meme_text_shadow = 'black'
 
@@ -30,10 +34,15 @@ class Meme_maker():
     def select_img(self, img_location):
 
         #Check if the file is valid as a command or an link, and open
-        local_meme = '{}\\{}.jpg'.format(self.default_meme,img_location)
+        local_meme = '{}\\{}.jpg'.format(self.default_meme, img_location)
         external_meme = img_location
-    
-        if os.path.isfile(local_meme):
+        if validators.url(external_meme):
+            print('Downloading meme image...(external meme)')
+            external_meme = self.meme_download(external_meme)
+            return Image.open(external_meme)
+
+
+        elif os.path.isfile(local_meme):
             print(local_meme)
             print('Valid file... (local meme)')
             return Image.open(local_meme)
@@ -42,7 +51,22 @@ class Meme_maker():
             print(external_meme)
             print('Valid file...(external meme)')
             return Image.open(external_meme)
-    
+
+    def meme_download(self, url):
+        #format meme save name
+        dl_meme_file = url.split('/')[-1]
+        dl_meme_file = re.sub('[^a-zA-Z0-9.]', '', dl_meme_file)
+        dl_meme_file = dl_meme_file.lower()
+        dl_meme_name_template = '{}\\{}'.format(self.default_meme, dl_meme_file)
+
+        #download
+        r = requests.get(url, stream=True)
+        if r.status_code == 200:
+            with open(dl_meme_name_template, 'wb') as file:
+                r.raw.decode_content = True
+                shutil.copyfileobj(r.raw, file)
+
+        return dl_meme_name_template
 
     def img_resize(self, img):
 
@@ -50,7 +74,7 @@ class Meme_maker():
         meme = img
         size = self.max_img_size
         meme.thumbnail(size)
-        
+
         #checking meme dimensions and changing font-size
         meme_width, meme_height = meme.size
         if meme_width > meme_height:
@@ -66,7 +90,7 @@ class Meme_maker():
         return meme
 
     def img_text(self, img, top_text, bot_text):
-        
+
         meme = img
         top_text = top_text
         bot_text = bot_text
@@ -114,7 +138,6 @@ class Meme_maker():
             pos_y = bot_line_coords[current_coord]
             DrawTextStroke(meme, pos_x, pos_y, line, self.default_font, 2)
             current_coord += 1
-        
 
         return meme
 
@@ -127,13 +150,13 @@ class Meme_maker():
         meme_name = 'new_meme'
         meme_id = len(os.listdir(self.generated_meme))
 
-        name_template = '{}{}.jpg'.format(meme_name,str(meme_id))
+        name_template = '{}{}.jpg'.format(meme_name, str(meme_id))
         path_template = save_path + '\\' + name_template
 
         if os.path.isfile(path_template):
             while os.path.isfile(path_template):
                 meme_id += 1
-                name_template = '{}{}.jpg'.format(meme_name,str(meme_id))
+                name_template = '{}{}.jpg'.format(meme_name, str(meme_id))
                 path_template = save_path + '\\' + name_template
 
         #save

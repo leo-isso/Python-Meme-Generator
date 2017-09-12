@@ -26,5 +26,5 @@ Generated meme:
 
 ### Future implementation:
 
-- [ ] Get image from URL using `Requests`
-- [ ] `local_memes` use any image extension `Requests`
+- [x] Get image from URL using `Requests`
+- [ ] `local_memes` use any image extension `Requests` [WIP]
