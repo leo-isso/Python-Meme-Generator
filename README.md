@@ -8,7 +8,7 @@ Or you can use a `main.py` function with some arguments:
 ```
 generate_meme(meme_image, top_text, bot_text)
 ```
-`meme_image` is the path to the meme image (with the extension). You can also use one of the images in the `default_meme` folder (only the file name, without path or extension).
+`meme_image` is the path to the meme image (with the extension). You can also use one of the images in the `default_meme` folder (only the file name, without path or extension (jpg only)).
 
 `top_text` is the text to be written on the top of the meme.
 
@@ -27,3 +27,4 @@ Generated meme:
 ### Future implementation:
 
 - [ ] Get image from URL using `Requests`
+- [ ] `local_memes` use any image extension `Requests`
