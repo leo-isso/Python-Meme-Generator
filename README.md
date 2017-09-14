@@ -27,4 +27,7 @@ Generated meme:
 ### Future implementation:
 
 - [x] Get image from URL using `Requests`
-- [ ] `local_memes` use any image extension `Requests` [WIP]
+- [x] `local_memes` use any image extension
+- [ ] One-line meme generation
+
+Updated [2017/09/13]

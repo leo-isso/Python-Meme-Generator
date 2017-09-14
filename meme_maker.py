@@ -14,6 +14,7 @@ class Meme_maker():
     def __init__(self):
 
         #default variables (free to change)
+        self.image_extension = ['png', 'jpg', 'jpeg', 'bmp']
         self.default_meme = 'default_meme'
         self.generated_meme = 'new_memes'
 
@@ -33,19 +34,21 @@ class Meme_maker():
 
     def select_img(self, img_location):
 
-        #Check if the file is valid as a command or an link, and open
-        local_meme = '{}\\{}.jpg'.format(self.default_meme, img_location)
+        #Check for local meme
+        for ext in self.image_extension:
+            local_meme = '{}\\{}.{}'.format(self.default_meme, img_location, ext)
+            if os.path.isfile(local_meme):
+                print(local_meme)
+                print('Valid file... (local meme)')
+                return Image.open(local_meme)
+
+
+        #Check if the file is valid as a link, and open
         external_meme = img_location
         if validators.url(external_meme):
             print('Downloading meme image...(external meme)')
             external_meme = self.meme_download(external_meme)
             return Image.open(external_meme)
-
-
-        elif os.path.isfile(local_meme):
-            print(local_meme)
-            print('Valid file... (local meme)')
-            return Image.open(local_meme)
 
         elif os.path.isfile(external_meme):
             print(external_meme)
