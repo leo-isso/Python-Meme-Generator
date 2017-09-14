@@ -28,6 +28,6 @@ Generated meme:
 
 - [x] Get image from URL using `Requests`
 - [x] `local_memes` use any image extension
-- [ ] One-line meme generation
+- [x] One-line meme generation
 
-Updated [2017/09/13]
+Updated [2017/09/14]

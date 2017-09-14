@@ -20,5 +20,15 @@ def generate_meme(meme_image, top_text, bot_text):
     meme = MK.img_text(meme, top_text, bot_text)
     MK.save_meme(meme)
 
+def inline_meme():
+    meme_input = input('Meme location,meme top text,bottom text: ')
+    meme_input = meme_input.split(',')
+    meme_image, top_text, bot_text = meme_input
+    meme = MK.select_img(meme_image)
+    meme = MK.img_resize(meme)
+    meme = MK.img_text(meme, top_text, bot_text)
+    MK.save_meme(meme)
+
+
 if __name__ == '__main__':
     run_terminal()
